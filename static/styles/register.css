@@ -1,0 +1,269 @@
+@import "universal.css";
+
+::selection {
+    background-color: #ff005dd8;
+    color: #fff;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: url('/static/images/login-bg.jpg')no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    background-color: #b2ddd3;
+    padding: 25px 30px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(15px);
+}
+
+.container .title {
+    color: #a9802a;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.content form .user-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+}
+
+form .user-details .input-box {
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+}
+
+form .input-box span.details {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.input-box input {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    background-color: #fff;
+    border: 1px solid #a9802a;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+    border-color: #9b59b6;
+}
+
+select {
+    height: 45px;
+    width: calc(100% / 2 + 150px);
+    padding-left: 10px;
+    font-size: 17px;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.414);
+}
+
+select:focus {
+    border-color: #9b59b6;
+    outline: none;
+}
+
+form .category {
+    display: flex;
+    width: 80%;
+    margin: 14px 0;
+    justify-content: space-between;
+}
+
+form .category label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+form .category label .dot {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: #d9d9d9;
+    border: 5px solid transparent;
+    transition: all 0.3s ease;
+}
+
+
+form .button {
+    height: 45px;
+    margin: 35px 0
+}
+
+form .button input {
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.box {
+    position: relative;
+    width: calc(100% / 2 - 20px);
+}
+
+.box .input-box input {
+    width: 100%;
+}
+
+.box .input-box #togglebtn {
+    position: absolute;
+    top: calc(50% - 25px);
+    right: 0;
+    width: 34px;
+    height: 34px;
+    margin-right: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box .input-box #togglebtn::before {
+    content: '\f06e';
+    /* f070 */
+    font-family: fontAwesome;
+}
+
+.box .input-box #togglebtn.hide::before {
+    content: '\f070';
+}
+
+.validation {
+    display: none;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    background: #376488;
+    padding: 10px;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.validation ul {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.validation ul li {
+    position: relative;
+    list-style: none;
+    color: #fff;
+    font-size: 0.85em;
+    transition: 0.5s;
+}
+
+.validation ul li::before {
+    content: '\f192';
+    width: 20px;
+    height: 10px;
+    font-family: fontAwesome;
+    display: inline-flex;
+}
+
+.validation ul li.valid {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.validation ul li.valid::before {
+    content: '\f00c';
+    color: lightgreen;
+}
+
+.box .input-box #pass {
+    width: 230%;
+}
+
+#submit {
+    background: #a9802a;
+    color: #fff;
+    border: none;
+    height: 35px;
+    width: 100px;
+    margin-left: calc(100% / 2 - 50px);
+    font-size: 15px;
+    text-transform: uppercase;
+    padding: 0;
+    transition: 250ms;
+}
+
+#submit:hover,
+#submit:focus {
+    cursor: pointer;
+    box-shadow: 3px 3px 10px #423434;
+    background-color: #2f9400;
+    outline: none;
+}
+
+.input-box a {
+    text-transform: capitalize;
+    color: #423434;
+    text-decoration: none;
+    transition: all 250ms;
+}
+
+.input-box.logindiv {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.input-box a:hover {
+    text-decoration: underline;
+    color: #a9802a;
+}
+
+@media(max-width: 584px) {
+    .container {
+        max-width: 100%;
+    }
+
+    form .user-details .input-box {
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    form .category {
+        width: 100%;
+    }
+
+    .content form .user-details {
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
+    .user-details::-webkit-scrollbar {
+        width: 5px;
+    }
+}

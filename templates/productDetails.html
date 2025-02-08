@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{product.name}}</title>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/header.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/footer.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/slider.css">
+
+    {% include 'links.html' %}
+    <style>
+        .confirm-box {
+            display: none;
+        }
+
+        .product-details {
+            display: flex;
+            flex-flow: row nowrap;
+            margin: 40px auto;
+            width: 80%;
+            padding: 80px 30px;
+            height: 600px;
+            background-color: #ffb7c383;
+            position: relative;
+        }
+
+        .product-details .image {
+            width: 50%;
+            height: 100%;
+            text-align: center;
+        }
+
+        .product-details .image img {
+            width: auto;
+            height: 100%;
+        }
+
+        .product-details .product-info {
+            display: flex;
+            width: 50%;
+            height: 80%;
+            flex-flow: column nowrap;
+            justify-content: space-around;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #a9802a;
+        }
+
+        .quantity-chooser-box .dcr,
+        .quantity-chooser-box .inr {
+            width: 50px;
+            height: 35px;
+            background-color: #027914;
+            color: #fff;
+            cursor: pointer;
+            border: 1px solid #fff;
+            font-size: 18px;
+        }
+
+        .quantity-chooser-box input[type="number"] {
+            box-sizing: border-box;
+            outline: none;
+            width: 150px;
+            height: 35px;
+            font-size: 16px;
+            font-weight: 400;
+            padding: 10px;
+        }
+
+        .summary {
+            background-color: #825900;
+            color: #fff;
+            font-size: 22px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            min-width: 100vw;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .summary .checkout-btn {
+            text-align: center;
+            text-decoration: none;
+            background-color: #b2ddd3;
+            color: #a9802a;
+            border: 2px solid #a9802a;
+            border-radius: 20px;
+            padding: 15px 30px;
+            width: max-content;
+            margin-left: auto;
+            margin-right: 20px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        @media screen and (max-width:992px) {
+            .product-details {
+                width: 95%;
+                padding: 40px 10px;
+                justify-content: space-between;
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            .product-details {
+                width: 95%;
+                flex-flow: column;
+                height: auto;
+                padding: 50px 15px;
+            }
+
+            .product-details .image {
+                width: 100%;
+                height: 50%;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .product-details .image img {
+                width: auto;
+                height: 100%;
+                max-width: 100%;
+            }
+
+            .product-details .product-info {
+                width: 100%;
+            }
+        }
+
+        #add-btn {
+            position: absolute;
+            left: 50%;
+            bottom: 15%;
+            width: 47.5%;
+            text-align: center;
+            text-decoration: none;
+            background-color: #b2ddd3;
+            color: #a9802a;
+            border: 2px solid #a9802a;
+            border-radius: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <div class="confirm-box">
+        <h2 class="confirm-msg"><i class="fa-solid fa-circle-exclamation"></i>Signing out will remove your account and
+            all the data related to it. Do you want to proceed?</h2>
+        <a href="{% url 'signOut' %}">Yes</a>
+        <button class="cancel-btn">No</button>
+    </div>
+
+    <div class="product-details">
+        <div class="image">
+            <img src="/media/{{product.product_image}}">
+        </div>
+        <div class="product-info">
+            <h2 class="name">{{product.name}}</h2>
+            <p class="desc">{{product.description}}</p>
+            Price per unit : <h3 class="price">&#x20B9;{{product.price}}</h3>
+            Quantity per unit : <p class="quantity">{{product.quantity_desc}}</p>
+        </div>
+        {% if loginID != None %}
+        <button id="add-btn" data-pid="{{product.id}}">Add To Cart</button>
+        <script>
+            document.querySelector('.site-menu').innerHTML += "<li class='menu-item user-menu'><a id='menu-link'><i class='fa-regular fa-circle-user'></i></a><ul class='user-options-menu'><li class='menu-item'><a href='{% url 'logOut' %}' class='menu-link'>Log Out</a></li><li class='menu-item'><a id='confirm-sign-out' class='menu-link'>Sign Out</a></li><li class='menu-item'><a href='{% url 'editProfile' %}' class='menu-link'>Edit Profile</a></li><li class='menu-item'><a href='{% url 'orderHistory' %}' class='menu-link'>My Orders</a></li></ul></li> <li class='menu-item'><a href='{% url 'openCart' %}' class='menu-link'><i class='fa fa-solid fa-cart-plus'></i></a></li>";
+
+            document.getElementById('confirm-sign-out').addEventListener('click', function () {
+                document.querySelector('.confirm-box').style.display = "block";
+            });
+            document.querySelector('.cancel-btn').addEventListener('click', function () {
+                document.querySelector('.confirm-box').style.display = "none";
+            });
+        </script>
+        {% endif %}
+    </div>
+
+    <div class="alert-box">
+        <div class="alert-msg"></div>
+    </div>
+    {% include 'footer.html' %}
+
+    <script>
+        document.getElementById('add-btn').addEventListener('click', function () {
+            var req = new XMLHttpRequest();
+            req.open("get", "addToCart/" + this.getAttribute('data-pid'), true);
+            req.send();
+            req.onreadystatechange = function () {
+                if (req.readyState == 4 && req.status == 200) {
+                    document.querySelector('.alert-box').style.display = "block";
+                    if (req.responseText == "True") {
+                        document.querySelector('.alert-msg').innerText = "Product Added to cart"
+                    }
+                    else {
+                        document.querySelector('.alert-msg').innerText = "Product already in cart!"
+                    }
+                    setTimeout(() => {
+                        document.querySelector('.alert-box').style.display = "none";
+                    }, 2500);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

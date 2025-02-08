@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/header.css">
+    <title>Cart</title>
+
+    {% include 'links.html' %}
+    <style>
+        .popup-form {
+            display: none;
+            max-width: 700px;
+            width: 100%;
+            background-color: #b2ddd3;
+            padding: 25px 30px;
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(15px);
+            margin-left: 400px;
+            z-index: -100;
+        }
+
+        .product-details {
+            display: flex;
+            flex-flow: row nowrap;
+            margin: 40px auto;
+            width: 80%;
+            padding: 40px;
+            height: 600px;
+            background-color: #b1ddd393;
+        }
+
+        .product-details .image {
+            width: 50%;
+            height: 100%;
+            text-align: center;
+        }
+
+        .product-details .image img {
+            width: auto;
+            height: 100%;
+        }
+
+        .product-details .product-info {
+            display: flex;
+            width: 50%;
+            flex-flow: column nowrap;
+            justify-content: space-around;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #a9802a;
+        }
+
+        .quantity-chooser-box .dcr,
+        .quantity-chooser-box .inr {
+            width: 50px;
+            height: 35px;
+            background-color: #027914;
+            color: #fff;
+            cursor: pointer;
+            border: 1px solid #fff;
+            font-size: 18px;
+        }
+
+        .quantity-chooser-box input[type="number"] {
+            box-sizing: border-box;
+            outline: none;
+            width: 150px;
+            height: 35px;
+            font-size: 16px;
+            font-weight: 400;
+            padding: 10px;
+        }
+
+        .summary {
+            background-color: #825900;
+            color: #fff;
+            font-size: 22px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            min-width: 100vw;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .summary .checkout-btn {
+            text-align: center;
+            text-decoration: none;
+            background-color: #b2ddd3;
+            color: #a9802a;
+            border: 2px solid #a9802a;
+            border-radius: 20px;
+            padding: 15px 30px;
+            width: max-content;
+            margin-left: auto;
+            margin-right: 20px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 18px;
+        }
+        .msg-heading{
+            text-align: center;
+            text-decoration: none;
+            background-color: #fbbcc683;
+            color: #a9802a;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        .bts-btn{
+            border: 2px solid #a9802a;
+            border-radius: 20px;
+            background-color: #b2ddd3;
+            font-size: 20px;
+            padding: 10px;
+        }
+        .success-box{
+            text-align: center;
+            text-decoration: none;
+            background-color: #fbbcc683;
+            color: #a9802a;
+        }
+        .detail-field-div{
+            margin: auto;
+        }
+        .detail-field input,textarea{
+            border-radius: 10px;
+            margin: 10px;
+            margin-left: 0px;
+            border: 2px solid #a9802a;
+            border-radius: 20px;
+            font-size: 20px;
+            padding: 10px;
+        }
+        .close-btn{
+            border: 2px solid #a9802a;
+            border-radius: 20px;
+            font-size: 20px;
+            padding: 10px;
+            float:inline-end;
+            
+        }
+
+        @media screen and (max-width:992px) {
+            .product-details {
+                width: 95%;
+                padding: 40px 10px;
+                justify-content: space-between;
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            .product-details {
+                width: 95%;
+                flex-flow: column;
+                height: auto;
+                padding: 50px 15px;
+            }
+
+            .product-details .image {
+                width: 100%;
+                height: 50%;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .product-details .image img {
+                width: auto;
+                height: 100%;
+                max-width: 100%;
+            }
+
+            .product-details .product-info {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+    {% if msg == "" %}
+    {% for p,q in productData %}
+    <div class="product-details">
+        <div class="image">
+            <img src="/media/{{p.product_image}}">
+        </div>
+        <div class="product-info">
+            <h1 class="name">{{p.name}}</h1>
+            <p class="desc">{{p.description}}</p>
+            Price per unit : <h3 class="price">&#x20B9;{{p.price}}</h3>
+            Quantity per unit : <p class="quantity">{{p.quantity_desc}}</p>
+            <div class="quantity-chooser-box">
+                <button class="dcr">-</button>
+                <input type="number" name="quantity" class="qty-selector" data-pid="{{p.id}}" value="{{q.quantity}}"
+                    min="1" step="1">
+                <button class="inr">+</button>
+                <a href="deleteitem/{{q.id}}">Remove</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="summary">
+        <div class="total-box"></div>
+        <button class="checkout-btn">Check Out</button>
+    </div>
+    <div class="popup-form">
+        <button class="close-btn">&times;</button>
+        <h2>Confirm delivery details</h2>
+        <form action="{% url 'placeOrder' %}" method="POST" class="details-confirmation-form">
+            {% csrf_token %}
+            <div class="detail-field-div">
+
+                <div class="detail-field">
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" readonly>
+                </div>
+                <div class="detail-field">
+                <label for="phone">Contact no:</label><br>
+                <input type="text" id="phone" name="phone" readonly />
+            </div>
+            <div class="detail-field">
+                <label for="address">Address:</label><br>
+                <textarea rows="5" cols="25" id="address" name="address" readonly style="resize: none;"></textarea>
+            </div>
+            <div class="detail-field">
+                <input type="hidden" name="totalAmount" id="total" value="">
+                <label>
+                    <input type="radio" checked>
+                    Cash on delivery
+                </label>
+                <input type="submit" class="place-order" value="Place Order" />
+            </div>
+        </div>
+        </form>
+    </div>
+    {% else %}
+    <h2 class="msg-heading">{{msg}}<button id='back-btn' class="bts-btn">Back to Shop</button></h2>
+    {% endif %}
+
+    <div class="success-box">
+        <h2 class="title">Hurray!</h2>
+        <p class="msg"></p>
+        <a href="{% url 'orderHistory' %}">View Order</a>
+    </div>
+
+    {% include 'footer.html' %}
+
+    {% if loginID != None %}
+
+    <script>
+        document.querySelector('.site-menu').innerHTML += "<li class='menu-item user-menu'><a id='menu-link'><i class='fa-regular fa-circle-user'></i></a><ul class='user-options-menu'><li class='menu-item'><a href='{% url 'logOut' %}' class='menu-link'>Log Out</a></li><li class='menu-item'><a id='confirm-sign-out' class='menu-link'>Sign Out</a></li><li class='menu-item'><a href='{% url 'editProfile' %}' class='menu-link'>Edit Profile</a></li><li class='menu-item'><a href='{% url 'orderHistory' %}' class='menu-link'>My Orders</a></li></ul></li> <li class='menu-item'><a href='{% url 'openCart' %}' class='menu-link'><i class='fa fa-solid fa-cart-plus'></i></a></li>";
+
+        document.getElementById('confirm-sign-out').addEventListener('click', function () {
+            document.querySelector('.confirm-box').style.display = "block";
+        });
+        // document.querySelector('.cancel-btn').addEventListener('click', function () {
+        //     document.querySelector('.confirm-box').style.display = "none";
+        // });
+    </script>
+    {% endif %}
+
+    <script>
+        function getQty(frm) {
+            qty = document.getElementById('quantity').value;
+            this.innerHTML += "<input type='text' name='qty' value='" + qty + "'/>";
+        }
+        function updateCart(q, id) {
+            var req = new XMLHttpRequest();
+            req.open("get", "updateCart/" + id + "-" + q, true);
+            req.send();
+            req.onreadystatechange = function () {
+                if (req.readyState == 4 && req.status == 200) {
+                    console.log(req.responseText);
+                }
+            }
+        }
+        function countTotal() {
+            let price = document.getElementsByClassName('price');
+            let qntity = document.getElementsByClassName('qty-selector');
+            let total = 0;
+            for (let i = 0; i < price.length; i++) {
+                console.log(total);
+                total = total + (parseInt(price[i].innerText.substr(1)) * parseInt(qntity[i].value));
+            }
+            document.querySelector('.total-box').innerHTML = "Total : &#x20B9;" + total;
+            document.getElementById('total').value = total;
+        }
+        try {
+            let qtyIp = document.getElementsByClassName('qty-selector');
+            let dcrbtn = document.getElementsByClassName('dcr');
+            for (let i = 0; i < dcrbtn.length; i++) {
+                dcrbtn[i].addEventListener('click', function () {
+                    if (parseInt(qtyIp[i].value) - 1) {
+                        qtyIp[i].value = parseInt(qtyIp[i].value) - 1;
+                        countTotal();
+                        updateCart(qtyIp[i].value, qtyIp[i].getAttribute('data-pid'));
+                    }
+                });
+            }
+            let inrbtn = document.getElementsByClassName('inr');
+            for (let i = 0; i < inrbtn.length; i++) {
+                inrbtn[i].addEventListener('click', function () {
+                    qtyIp[i].value = parseInt(qtyIp[i].value) + 1;
+                    countTotal();
+                    updateCart(qtyIp[i].value, qtyIp[i].getAttribute('data-pid'));
+                });
+
+            }
+        } catch (error) { }
+    </script>
+    <script>
+        window.addEventListener('load', function () {
+            try {
+                document.getElementById('back-btn').addEventListener('click', function () {
+                    history.back();
+                });
+            } catch (error) { }
+
+            try {
+                countTotal()
+            } catch (error) { }
+
+            try {
+                document.querySelector('.checkout-btn').addEventListener('click', function () {
+                    document.querySelector('.popup-form').style.display = "block";
+                    document.querySelector('.close-btn').addEventListener('click', function () {
+                        document.querySelector('.popup-form').style.display = "none";
+                    });
+                    var req = new XMLHttpRequest();
+                    req.open("get", "{% url 'fetchUserDetails' %}", true);
+                    req.send();
+                    req.onreadystatechange = function () {
+                        if (req.readyState == 4 && req.status == 200) {
+                            // console.log(req.responseText)
+                            let res = req.responseText;
+                            let name = res.substr(0, res.indexOf(' - '));
+                            res = res.substr(res.indexOf(' - ') + 3)
+                            let phone = res.substr(0, res.indexOf(' - '))
+                            res = res.substr(res.indexOf(' - ') + 3)
+                            let address = res
+                            document.getElementById('name').value = name
+                            document.getElementById('phone').value = phone
+                            document.getElementById('address').value = address
+                        }
+                    }
+                });
+            } catch (error) { }
+        });
+    </script>
+    <div style="width: 100%;height: 100px;"></div>
+</body>
+
+</html>

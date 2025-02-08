@@ -1,0 +1,115 @@
+@import "universal.css";
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    background: url('/static/images/login-bg.jpg')no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+}
+
+.login-form {
+    width: 33%;
+    padding: 50px 30px;
+    background-color: #b2ddd3;
+}
+
+.login-form .header {
+    color: #a9802a;
+    text-align: center;
+    margin: 20px;
+    text-transform: uppercase;
+}
+
+.details {
+    width: 80%;
+    margin: 35px auto;
+}
+
+.details input {
+    width: 100%;
+    outline: none;
+    border: 1px solid #a9802a;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.details #loginbtn {
+    display: block;
+    height: 50px;
+    width: 150px;
+    margin: 20px auto;
+    border: 1px solid #a9802a;
+    color: #a9802a;
+    background: #ffb3c0;
+    transition: all 300ms;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.details #loginbtn:hover {
+    box-shadow: 0px 0px 10px #a9802a;
+}
+
+.details span {
+    font-size: 18px;
+}
+
+.details.bottom {
+    text-align: center;
+}
+
+.details a {
+    display: inline-block;
+
+    text-decoration: none;
+    color: #a9802a;
+    font-size: 18px;
+}
+
+.details a.skip-btn {
+    display: block;
+
+}
+
+@media screen and (max-width:1124px) {
+    .login-form {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width:992px) {
+    .login-form {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .login-form {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width:576px) {
+    .login-form {
+        width: 90%;
+    }
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000;
+    display: none;
+}
+
+.popup>.popup-dialog {
+    color: #b70000;
+}

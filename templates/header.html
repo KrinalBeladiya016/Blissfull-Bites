@@ -1,0 +1,23 @@
+<nav class="menu-bar">
+    <div class="close">Close</div>
+    <img src="/static/logo.jpeg" class="logo">
+    <div class="open">Menu</div>
+    <ul class="site-menu">
+        <li class="menu-item"><a class="menu-link" href="{% url 'home' %}">home</a></li>
+        <li class="menu-item"><a class="menu-link" href="{% url 'categories' %}">Products</a></li>
+        <li class="menu-item"><a class="menu-link" href="{% url 'aboutUsPage' %}">about us</a></li>
+        <li class="menu-item"><a class="menu-link" href="#footer">contact us</a></li>
+        <li class="menu-item"><a class="menu-link" href="{% url 'franchise' %}">become franchise</a></li>
+    </ul>
+</nav>
+<script>
+    document.querySelector('.close').style.display = "none";    
+    document.querySelector('.close').addEventListener('click', function () {   
+        document.querySelector('.site-menu').classList.remove('active');
+        this.style.display = "none";
+    });
+    document.querySelector('.open').addEventListener('click', function () {
+        document.querySelector('.site-menu').classList.add('active');
+        document.querySelector('.close').style.display = "inline-block";
+    });
+</script>

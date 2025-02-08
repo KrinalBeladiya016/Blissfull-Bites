@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/styles/login.css">
+
+    {% include 'links.html' %}
+</head>
+
+<body>
+    <form class="login-form" method="post">
+        {% csrf_token %}
+        <h1 class="header">login</h1>
+        <div class="details">
+            <!-- <label for="emlInp">Email</label> -->
+            <i class="fa-solid fa-envelope-circle-check"></i>
+            <input type="email" name="email" id="emlInp" placeholder="Email" maxlength="50" size="35" required
+                autofocus>
+        </div>
+        <div class="details">
+            <!-- <label for="pwdInp">Password</label> -->
+            <i class="fa-solid fa-key"></i>
+            <input type="password" name="password" id="pwdInp" placeholder="Password" maxlength="12" size="35" required>
+        </div>
+        <div class="details">
+            <input type="submit" value="Login" id="loginbtn">
+        </div>
+        <div class="details bottom">
+            <span>Register for free</span>
+            <a href="{% url 'register' %}">Sign Up</a><br />
+            <a href="{% url 'home' %}" class="skip-btn">Skip for now</a>
+        </div>
+
+    </form>
+    {% if invalidMsg %}
+    <div class="popup">
+        <div class="popup-dialog">
+            <h2 class="popup-header">Invalid Login</h2>
+            <div class="popup-msg">{{invalidMsg}}</div>
+            <button id="close">close</button>
+        </div>
+    </div>
+    {% endif %}
+    <script>
+        try {
+            let p = document.querySelector('.popup');
+            p.style.display = "block";
+            document.getElementById('close').addEventListener('click', () => {
+                p.style.display = "none";
+            });
+        } catch (error) {
+
+        }
+    </script>
+</body>
+
+</html>

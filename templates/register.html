@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/register.css">
+
+    {% include 'links.html' %}
+</head>
+
+<body>
+    <script>
+        function validateInt(ele) {
+            if (isNaN(parseInt(ele.value.substr(ele.value.length - 1)))) {
+                ele.value = ele.value.substr(0, ele.value.length - 1);
+            }
+        }
+
+        function validateState(state) {
+            if (state.value == "Select State") {
+                alert("Please Select the State in which you live!!");
+            }
+        }
+
+        function validateForm() {
+            var contact = document.getElementById("contact_no");
+            var state = document.getElementById("state");
+            var pass = document.getElementById("pass");
+            var cnfrmpass = document.getElementById("confrmPass");
+            var flag = false;
+
+            if (contact.value.length < 10) {
+                alert("Contact number should be minimum 10 digits long. Hint: If you use a landline or telephone, then append you area code before your number.");
+                contact.focus();
+                return false;
+            } else if (cnfrmpass.value != pass.value) {
+                alert("Password and Confirm Password doesn't match!!");
+                return false;
+            } else if (state.value == "Select State") {
+                alert("Please Select the State in which you live!!");
+                return false;
+            } else {
+                flag = true;
+            }
+            if (lowercase.classList.contains('valid') && uppercase.classList.contains('valid') && digit.classList.contains('valid') && specialchar.classList.contains('valid') && mlength.classList.contains('valid')) {
+                flag = true;
+            } else {
+                alert('Password doesn\'t match the criteria!!');
+                pass.focus();
+                return false;
+            }
+
+            return flag;
+        }
+
+        function showList() {
+            document.getElementById('validateList').style.display = "block";
+        }
+
+        function hideList() {
+            document.getElementById('validateList').style.display = "none";
+        }
+    </script>
+
+    <div class="container">
+        <h1 class="title">register here</h1>
+        <div class="content">
+            <form method="POST" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <div class="user-details">
+                    <div class="input-box">
+                        <!-- <label class="details" for="fname">First Name</label> -->
+                        <input type="text" name="fname" id="fname" placeholder="First Name" required autofocus />
+                    </div>
+                    <div class="input-box">
+                        <!-- <label class="details" for="lname">Last Name</label> -->
+                        <input type="text" name="lname" id="lname" placeholder="Last Name" required />
+                    </div>
+                    <div class="input-box">
+                        <!-- <label class="details" for="contact_no">Phone Number</label> -->
+                        <input type="text" name="contact_no" maxlength="10" id="contact_no" placeholder="Contact No"
+                            required oninput="validateInt(this)" />
+                    </div>
+                    <div class="input-box">
+                        <!-- <label class="details" for="email">Email</label> -->
+                        <input type="email" name="email" id="email" placeholder="Email ID" required />
+                    </div>
+
+                    <div class="input-box">
+                        <!-- <label class="details" for="house">House/Building</label> -->
+                        <input type="text" name="house" id="house" placeholder="Enter your house" required />
+                    </div>
+
+                    <div class="input-box">
+                        <!-- <label class="details" for="area">Road/Area/Colony</label> -->
+                        <input type="text" name="area" id="area" placeholder="Enter your area" required />
+                    </div>
+
+                    <div class="input-box">
+                        <!-- <label class="details" for="city">City </label> -->
+                        <input type="text" name="city" id="city" placeholder="Enter your city" required />
+                    </div>
+
+                    <div class="input-box">
+                        <!-- <label class="details" for="state">State </label> -->
+                        <input type="text" name="state" id="state" placeholder="Enter your state" required />
+                    </div>
+
+
+                    <div class="input-box">
+                        <!-- <label class="details" for="pincode">pincode</label> -->
+                        <input type="text" name="pincode" id="pincode" placeholder="Enter your pincode" required />
+                    </div>
+
+                    <div class="box">
+                        <div class="input-box">
+                            <!-- <label class="details">Password</label> -->
+                            <input type="password" name="password" id="pass" maxlength="12" onfocus="showList()"
+                                onblur="hideList()" placeholder="Passsword" oninput="checkpassword(this.value)"
+                                required />
+                            <label id="togglebtn"></label>
+                        </div>
+                        <div class="validation" id="validateList">
+                            <ul>
+                                <li id="Lower">At least one Lowercase character</li>
+                                <li id="Upper">At least one Uppercase character</li>
+                                <li id="Number">At least one Number</li>
+                                <li id="Special">At least one Special character</li>
+                                <li id="length">At least 8 character</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <script>
+                        let pswd = document.getElementById('pass');
+                        let togglebtn = document.getElementById('togglebtn');
+
+                        let lowercase = document.getElementById('Lower');
+                        let uppercase = document.getElementById('Upper');
+                        let digit = document.getElementById('Number');
+                        let specialchar = document.getElementById('Special');
+                        let mlength = document.getElementById('length');
+
+                        function checkpassword(data) {
+                            const Lower = new RegExp('(?=.*[a-z])');
+                            const Upper = new RegExp('(?=.*[A-Z])');
+                            const Number = new RegExp('(?=.*[0-9])');
+                            const Special = new RegExp('(?=.*[!@#\$%\^&\*\_])');
+                            const length = new RegExp('(?=.{8,})');
+
+                            // lowercase
+                            if (Lower.test(data)) {
+                                lowercase.classList.add('valid');
+                            } else {
+                                lowercase.classList.remove('valid');
+                            }
+
+                            // uppercase
+                            if (Upper.test(data)) {
+                                uppercase.classList.add('valid');
+                            } else {
+                                uppercase.classList.remove('valid');
+                            }
+
+                            // number
+                            if (Number.test(data)) {
+                                digit.classList.add('valid');
+                            } else {
+                                digit.classList.remove('valid');
+                            }
+
+                            // special
+                            if (Special.test(data)) {
+                                specialchar.classList.add('valid');
+                            } else {
+                                specialchar.classList.remove('valid');
+                            }
+
+                            // length
+                            if (length.test(data)) {
+                                mlength.classList.add('valid');
+                            } else {
+                                mlength.classList.remove('valid');
+                            }
+                        }
+
+                        // hide psd
+                        togglebtn.onclick = function () {
+                            if (pswd.type === 'password') {
+                                pswd.setAttribute('type', 'text');
+                                togglebtn.classList.add('hide');
+                            } else {
+                                pswd.setAttribute('type', 'password');
+                                togglebtn.classList.remove('hide');
+                            }
+                        }
+
+                        document.getElementById('pincode').addEventListener('input', function () {
+                            if (isNaN(parseInt(this.value.substr(this.value.length - 1))) || (this.value.length > 6)) {
+                                this.value = this.value.substr(0, this.value.length - 1);
+                            }
+                        });
+                    </script>
+
+                    <div class="input-box">
+                        <!-- <label class="details">Confirm Password</label> -->
+                        <input type="password" name="confrmPass" id="confrmPass" maxlength="12"
+                            placeholder="Confirm Password" required>
+                    </div>
+                </div>
+
+                <div class="input-box">
+                    <input type="submit" name="submit" value="Register" id="submit">
+                </div>
+
+            </form>
+        </div>
+        <div class="input-box logindiv">
+            Already Have an Account?
+            <a href="{% url 'indexPage' %}" style="text-transform: uppercase;">login</a>
+        </div>
+    </div>
+</body>
+
+</html>

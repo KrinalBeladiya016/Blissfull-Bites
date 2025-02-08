@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{cname}}</title>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/header.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/footer.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/slider.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/categories.css">
+
+    {% include 'links.html' %}
+    <style>
+        .confirm-box {
+            display: none;
+        }
+        
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+    <div class="confirm-box">
+        <h2 class="confirm-msg"><i class="fa-solid fa-circle-exclamation"></i>Signing out will remove your account and
+            all the data related to it. Do you want to proceed?</h2>
+        <a href="{% url 'signOut' %}">Yes</a>
+        <button class="cancel-btn">No</button>
+    </div>
+
+    <p class="heading t-color text-center f-family text-uppercase">Categories</p>
+    <div class="product t-uppercase">
+        <button class="pre-btn"><img src="/static/images/right.png" width="50px" height="50px" alt=""></button>
+        <button class="nxt-btn"><img src="/static/images/left.png" width="50px" height="50px" alt=""></button>
+
+        <div class="product-container">
+            {% for c in categories %}
+            <div class="product-card">
+                <a href="/products/{{c.name}}">
+                    <div class="product-image">
+                        <img src="/media/{{c.thumbnail_image}}" class="product-thumb">
+                    </div>
+                    <h2 class="t-color text-center f-family">{{c.name}}</h2>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        const productContainers = [...document.querySelectorAll('.product-container')];
+        const nxtBtn = [...document.querySelectorAll('.nxt-btn')];
+        const preBtn = [...document.querySelectorAll('.pre-btn')];
+
+        productContainers.forEach((item, i) => {
+            let containerDimensions = item.getBoundingClientRect();
+            let containerWidth = containerDimensions.width;
+
+            nxtBtn[i].addEventListener('click', () => {
+                item.scrollLeft += containerWidth;
+            })
+
+            preBtn[i].addEventListener('click', () => {
+                item.scrollLeft -= containerWidth;
+            })
+        })
+    </script>
+
+
+    <!-- {% for c in categories %}
+    <div class="categories">
+        <a href="/products/{{c.name}}" class="category-link">
+            <img src="/media/{{c.thumbnail_image}}" class="category-thumbnail">
+            <div class="category-desc">
+                <h2 class="category-name">{{c.name}}</h2>
+            </div>
+        </a>
+    </div>
+    {% endfor %} -->
+
+
+    <div class="categories">
+        {% for info in prodInfo %}
+        <a href="/productDetails/{{info.id}}" class="category-link">
+            <!-- <div class="product-info"> -->
+            <!-- <div class="prod-image"> -->
+            <img src="/media/{{info.product_image}}" class="category-thumbnail"/>
+            <!-- </div> -->
+            <div class="category-desc">
+                <h3 class="category-name">{{info.name}}</h3>
+                <h4 class="category-price">&#x20B9;{{info.price}}</h4>
+            </div>
+            <!-- </div> -->
+        </a>
+        {% endfor %}
+        {% if loginID != None %}
+        <script>
+            document.querySelector('.site-menu').innerHTML += "<li class='menu-item user-menu'><a id='menu-link'><i class='fa-regular fa-circle-user'></i></a><ul class='user-options-menu'><li class='menu-item'><a href='{% url 'logOut' %}' class='menu-link'>Log Out</a></li><li class='menu-item'><a id='confirm-sign-out' class='menu-link'>Sign Out</a></li><li class='menu-item'><a href='{% url 'editProfile' %}' class='menu-link'>Edit Profile</a></li><li class='menu-item'><a href='{% url 'orderHistory' %}' class='menu-link'>My Orders</a></li></ul></li> <li class='menu-item'><a href='{% url 'openCart' %}' class='menu-link'><i class='fa fa-solid fa-cart-plus'></i></a></li>";
+
+            document.getElementById('confirm-sign-out').addEventListener('click', function () {
+                document.querySelector('.confirm-box').style.display = "block";
+            });
+            document.querySelector('.cancel-btn').addEventListener('click', function () {
+                document.querySelector('.confirm-box').style.display = "none";
+            });
+        </script>
+        {% endif %}
+    </div>
+
+    <div class="alert-box">
+        <div class="alert-msg"></div>
+    </div>
+
+
+
+    {% include 'footer.html' %}
+
+    <script>
+        document.getElementById('add-btn').addEventListener('click', function () {
+            var req = new XMLHttpRequest();
+            req.open("get", "addToCart/" + this.getAttribute('data-pid'), true);
+            req.send();
+            req.onreadystatechange = function () {
+                if (req.readyState == 4 && req.status == 200) {
+                    document.querySelector('.alert-box').style.display = "block";
+                    if (req.responseText == "True") {
+                        document.querySelector('.alert-msg').innerText = "Product Added to cart"
+                    }
+                    else {
+                        document.querySelector('.alert-msg').innerText = "Product already in cart!"
+                    }
+                    setTimeout(() => {
+                        document.querySelector('.alert-box').style.display = "none";
+                    }, 2500);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
